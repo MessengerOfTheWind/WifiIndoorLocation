@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WifitableMapper">
+    
+    <resultMap type="Wifitable" id="WifitableResult">
+        <result property="wiId"    column="wi_id"    />
+        <result property="poId"    column="po_id"    />
+        <result property="apId"    column="ap_id"    />
+        <result property="wiRssi"    column="wi_rssi"    />
+        <result property="wiDate"    column="wi_date"    />
+    </resultMap>
+
+    <sql id="selectWifitableVo">
+        select wi_id, po_id, ap_id, wi_rssi, wi_date from wifitable
+    </sql>
+
+    <select id="selectWifitableList" parameterType="Wifitable" resultMap="WifitableResult">
+        <include refid="selectWifitableVo"/>
+        <where>  
+            <if test="poId != null "> and po_id = #{poId}</if>
+            <if test="apId != null "> and ap_id = #{apId}</if>
+            <if test="wiRssi != null  and wiRssi != ''"> and wi_rssi = #{wiRssi}</if>
+            <if test="wiDate != null "> and wi_date = #{wiDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectWifitableByWiId" parameterType="Long" resultMap="WifitableResult">
+        <include refid="selectWifitableVo"/>
+        where wi_id = #{wiId}
+    </select>
+        
+    <insert id="insertWifitable" parameterType="Wifitable" useGeneratedKeys="true" keyProperty="wiId">
+        insert into wifitable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="poId != null">po_id,</if>
+            <if test="apId != null">ap_id,</if>
+            <if test="wiRssi != null">wi_rssi,</if>
+            <if test="wiDate != null">wi_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="poId != null">#{poId},</if>
+            <if test="apId != null">#{apId},</if>
+            <if test="wiRssi != null">#{wiRssi},</if>
+            <if test="wiDate != null">#{wiDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWifitable" parameterType="Wifitable">
+        update wifitable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="poId != null">po_id = #{poId},</if>
+            <if test="apId != null">ap_id = #{apId},</if>
+            <if test="wiRssi != null">wi_rssi = #{wiRssi},</if>
+            <if test="wiDate != null">wi_date = #{wiDate},</if>
+        </trim>
+        where po_id = #{poId} and ap_id = #{apId}
+    </update>
+
+    <delete id="deleteWifitableByWiId" parameterType="Long">
+        delete from wifitable where wi_id = #{wiId}
+    </delete>
+
+    <delete id="deleteWifitableByWiIds" parameterType="String">
+        delete from wifitable where wi_id in 
+        <foreach item="wiId" collection="array" open="(" separator="," close=")">
+            #{wiId}
+        </foreach>
+    </delete>
+</mapper>

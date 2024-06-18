@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MeasurewifitableMapper">
+    
+    <resultMap type="Measurewifitable" id="MeasurewifitableResult">
+        <result property="measureWifiId"    column="measure_wifi_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="blockId" column="block_id" />
+        <result property="wiMac"    column="wi_mac"    />
+        <result property="measureWifiRssi"    column="measure_wifi_rssi"    />
+        <result property="measureWifiDate"    column="measure_wifi_date"    />
+        <result property="poX"    column="po_x"    />
+        <result property="poY"    column="po_y"    />
+        <result property="poZ"    column="po_z"    />
+    </resultMap>
+
+    <sql id="selectMeasurewifitableVo">
+        select measure_wifi_id, area_id, block_id, wi_mac, measure_wifi_rssi, measure_wifi_date, po_x, po_y, po_z from measurewifitable
+    </sql>
+
+    <select id="selectMeasurewifitableList" parameterType="Measurewifitable" resultMap="MeasurewifitableResult">
+        <include refid="selectMeasurewifitableVo"/>
+        <where>  
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="blockId != null"> and block_id = #{blockId}</if>
+            <if test="wiMac != null  and wiMac != ''"> and wi_mac = #{wiMac}</if>
+            <if test="measureWifiRssi != null  and measureWifiRssi != ''"> and measure_wifi_rssi = #{measureWifiRssi}</if>
+            <if test="measureWifiDate != null "> and measure_wifi_date = #{measureWifiDate}</if>
+            <if test="poX != null  and poX != ''"> and po_x = #{poX}</if>
+            <if test="poY != null  and poY != ''"> and po_y = #{poY}</if>
+            <if test="poZ != null  and poZ != ''"> and po_z = #{poZ}</if>
+        </where>
+    </select>
+    
+    <select id="selectMeasurewifitableByMeasureWifiId" parameterType="Long" resultMap="MeasurewifitableResult">
+        <include refid="selectMeasurewifitableVo"/>
+        where measure_wifi_id = #{measureWifiId}
+    </select>
+        
+    <insert id="insertMeasurewifitable" parameterType="Measurewifitable" useGeneratedKeys="true" keyProperty="measureWifiId">
+        insert into measurewifitable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">area_id,</if>
+            <if test="blockId != null">block_id,</if>
+            <if test="wiMac != null and wiMac != ''">wi_mac,</if>
+            <if test="measureWifiRssi != null and measureWifiRssi != ''">measure_wifi_rssi,</if>
+            <if test="measureWifiDate != null">measure_wifi_date,</if>
+            <if test="poX != null and poX != ''">po_x,</if>
+            <if test="poY != null and poY != ''">po_y,</if>
+            <if test="poZ != null and poZ != ''">po_z,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">#{areaId},</if>
+            <if test="blockId != null">block_id,</if>
+            <if test="wiMac != null and wiMac != ''">#{wiMac},</if>
+            <if test="measureWifiRssi != null and measureWifiRssi != ''">#{measureWifiRssi},</if>
+            <if test="measureWifiDate != null">#{measureWifiDate},</if>
+            <if test="poX != null and poX != ''">#{poX},</if>
+            <if test="poY != null and poY != ''">#{poY},</if>
+            <if test="poZ != null and poZ != ''">#{poZ},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMeasurewifitable" parameterType="Measurewifitable">
+        update measurewifitable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="blockId != null">block_id = #{blockId}</if>
+            <if test="wiMac != null and wiMac != ''">wi_mac = #{wiMac},</if>
+            <if test="measureWifiRssi != null and measureWifiRssi != ''">measure_wifi_rssi = #{measureWifiRssi},</if>
+            <if test="measureWifiDate != null">measure_wifi_date = #{measureWifiDate},</if>
+            <if test="poX != null and poX != ''">po_x = #{poX},</if>
+            <if test="poY != null and poY != ''">po_y = #{poY},</if>
+            <if test="poZ != null and poZ != ''">po_z = #{poZ},</if>
+        </trim>
+        where measure_wifi_id = #{measureWifiId}
+    </update>
+
+    <delete id="deleteMeasurewifitableByMeasureWifiId" parameterType="Long">
+        delete from measurewifitable where measure_wifi_id = #{measureWifiId}
+    </delete>
+
+    <delete id="deleteMeasurewifitableByMeasureWifiIds" parameterType="String">
+        delete from measurewifitable where measure_wifi_id in 
+        <foreach item="measureWifiId" collection="array" open="(" separator="," close=")">
+            #{measureWifiId}
+        </foreach>
+    </delete>
+</mapper>

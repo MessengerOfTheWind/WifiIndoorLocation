@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PositiontableMapper">
+    
+    <resultMap type="Positiontable" id="PositiontableResult">
+        <result property="poId"    column="po_id"    />
+        <result property="poName"    column="po_name"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="poX"    column="po_x"    />
+        <result property="poY"    column="po_y"    />
+        <result property="poZ"    column="po_z"    />
+    </resultMap>
+
+    <sql id="selectPositiontableVo">
+        select po_id, po_name, area_id, po_x, po_y, po_z from positiontable
+    </sql>
+
+    <select id="selectPositiontableList" parameterType="Positiontable" resultMap="PositiontableResult">
+        <include refid="selectPositiontableVo"/>
+        <where>  
+            <if test="poName != null  and poName != ''"> and po_name like concat('%', #{poName}, '%')</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="poX != null  and poX != ''"> and po_x = #{poX}</if>
+            <if test="poY != null  and poY != ''"> and po_y = #{poY}</if>
+            <if test="poZ != null  and poZ != ''"> and po_z = #{poZ}</if>
+        </where>
+    </select>
+    
+    <select id="selectPositiontableByPoId" parameterType="Long" resultMap="PositiontableResult">
+        <include refid="selectPositiontableVo"/>
+        where po_id = #{poId}
+    </select>
+        
+    <insert id="insertPositiontable" parameterType="Positiontable" useGeneratedKeys="true" keyProperty="poId">
+        insert into positiontable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="poName != null and poName != ''">po_name,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="poX != null and poX != ''">po_x,</if>
+            <if test="poY != null and poY != ''">po_y,</if>
+            <if test="poZ != null and poZ != ''">po_z,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="poName != null and poName != ''">#{poName},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="poX != null and poX != ''">#{poX},</if>
+            <if test="poY != null and poY != ''">#{poY},</if>
+            <if test="poZ != null and poZ != ''">#{poZ},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePositiontable" parameterType="Positiontable">
+        update positiontable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="poName != null and poName != ''">po_name = #{poName},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="poX != null and poX != ''">po_x = #{poX},</if>
+            <if test="poY != null and poY != ''">po_y = #{poY},</if>
+            <if test="poZ != null and poZ != ''">po_z = #{poZ},</if>
+        </trim>
+        where po_id = #{poId}
+    </update>
+
+    <delete id="deletePositiontableByPoId" parameterType="Long">
+        delete from positiontable where po_id = #{poId}
+    </delete>
+
+    <delete id="deletePositiontableByPoIds" parameterType="String">
+        delete from positiontable where po_id in 
+        <foreach item="poId" collection="array" open="(" separator="," close=")">
+            #{poId}
+        </foreach>
+    </delete>
+</mapper>

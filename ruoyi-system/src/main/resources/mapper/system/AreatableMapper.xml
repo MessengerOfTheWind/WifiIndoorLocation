@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AreatableMapper">
+    
+    <resultMap type="Areatable" id="AreatableResult">
+        <result property="areaId"    column="area_id"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="areaDescription"    column="area_description"    />
+        <result property="areaApnum"    column="area_apnum"    />
+    </resultMap>
+
+    <sql id="selectAreatableVo">
+        select area_id, area_name, area_description, area_apnum from areatable
+    </sql>
+
+    <select id="selectAreatableList" parameterType="Areatable" resultMap="AreatableResult">
+        <include refid="selectAreatableVo"/>
+        <where>  
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="areaDescription != null  and areaDescription != ''"> and area_description = #{areaDescription}</if>
+            <if test="areaApnum != null "> and area_apnum = #{areaApnum}</if>
+        </where>
+    </select>
+    
+    <select id="selectAreatableByAreaId" parameterType="Long" resultMap="AreatableResult">
+        <include refid="selectAreatableVo"/>
+        where area_id = #{areaId}
+    </select>
+        
+    <insert id="insertAreatable" parameterType="Areatable" useGeneratedKeys="true" keyProperty="areaId,areaName">
+        insert into areatable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaName != null and areaName != ''">area_name,</if>
+            <if test="areaDescription != null">area_description,</if>
+            <if test="areaApnum != null">area_apnum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaName != null and areaName != ''">#{areaName},</if>
+            <if test="areaDescription != null">#{areaDescription},</if>
+            <if test="areaApnum != null">#{areaApnum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAreatable" parameterType="Areatable">
+        update areatable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaName != null and areaName != ''">area_name = #{areaName},</if>
+            <if test="areaDescription != null">area_description = #{areaDescription},</if>
+            <if test="areaApnum != null">area_apnum = #{areaApnum},</if>
+        </trim>
+        where area_id = #{areaId}
+    </update>
+
+    <delete id="deleteAreatableByAreaId" parameterType="Long">
+        delete from areatable where area_id = #{areaId}
+    </delete>
+
+    <delete id="deleteAreatableByAreaIds" parameterType="String">
+        delete from areatable where area_id in 
+        <foreach item="areaId" collection="array" open="(" separator="," close=")">
+            #{areaId}
+        </foreach>
+    </delete>
+</mapper>

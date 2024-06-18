@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AptableMapper">
+    
+    <resultMap type="Aptable" id="AptableResult">
+        <result property="apId"    column="ap_id"    />
+        <result property="apName"    column="ap_name"    />
+        <result property="apMac"    column="ap_mac"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="poId"    column="po_id"    />
+        <result property="apDescription"    column="ap_description"    />
+    </resultMap>
+
+    <sql id="selectAptableVo">
+        select ap_id, ap_name, ap_mac, area_id, po_id, ap_description from aptable
+    </sql>
+
+    <select id="selectAptableList" parameterType="Aptable" resultMap="AptableResult">
+        <include refid="selectAptableVo"/>
+        <where>  
+            <if test="apName != null  and apName != ''"> and ap_name like concat('%', #{apName}, '%')</if>
+            <if test="apMac != null  and apMac != ''"> and ap_mac = #{apMac}</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="poId != null "> and po_id = #{poId}</if>
+            <if test="apDescription != null  and apDescription != ''"> and ap_description = #{apDescription}</if>
+        </where>
+    </select>
+    
+    <select id="selectAptableByApId" parameterType="Long" resultMap="AptableResult">
+        <include refid="selectAptableVo"/>
+        where ap_id = #{apId}
+    </select>
+        
+    <insert id="insertAptable" parameterType="Aptable" useGeneratedKeys="true" keyProperty="apId">
+        insert into aptable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="apName != null and apName != ''">ap_name,</if>
+            <if test="apMac != null and apMac != ''">ap_mac,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="poId != null">po_id,</if>
+            <if test="apDescription != null">ap_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="apName != null and apName != ''">#{apName},</if>
+            <if test="apMac != null and apMac != ''">#{apMac},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="poId != null">#{poId},</if>
+            <if test="apDescription != null">#{apDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAptable" parameterType="Aptable">
+        update aptable
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="apName != null and apName != ''">ap_name = #{apName},</if>
+            <if test="apMac != null and apMac != ''">ap_mac = #{apMac},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="poId != null">po_id = #{poId},</if>
+            <if test="apDescription != null">ap_description = #{apDescription},</if>
+        </trim>
+        where ap_id = #{apId}
+    </update>
+
+    <delete id="deleteAptableByApId" parameterType="Long">
+        delete from aptable where ap_id = #{apId}
+    </delete>
+
+    <delete id="deleteAptableByApIds" parameterType="String">
+        delete from aptable where ap_id in 
+        <foreach item="apId" collection="array" open="(" separator="," close=")">
+            #{apId}
+        </foreach>
+    </delete>
+</mapper>
