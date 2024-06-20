@@ -25,9 +25,6 @@ public class Measurewifitable extends BaseEntity
     @Excel(name = "区域 id")
     private Long areaId;
 
-    @Excel(name = "区域块id号")
-    private Long blockId;
-
     /** mac 地址 */
     @Excel(name = "mac 地址")
     private String wiMac;
@@ -57,9 +54,8 @@ public class Measurewifitable extends BaseEntity
     public Measurewifitable(){
 
     }
-    public Measurewifitable(Long areaId, Long blockId, String wiMac, Float poX, Float poY, Float poZ) {
+    public Measurewifitable(Long areaId, String wiMac, Float poX, Float poY, Float poZ) {
         this.areaId = areaId;
-        this.blockId = blockId;
         this.wiMac = wiMac;
         this.poX = poX;
         this.poY = poY;
@@ -82,14 +78,6 @@ public class Measurewifitable extends BaseEntity
 
     public void setAreaId(Long areaId) {
         this.areaId = areaId;
-    }
-
-    public Long getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Long blockId) {
-        this.blockId = blockId;
     }
 
     public String getWiMac() {
@@ -145,7 +133,6 @@ public class Measurewifitable extends BaseEntity
         return "Measurewifitable{" +
                 "measureWifiId=" + measureWifiId +
                 ", areaId=" + areaId +
-                ", blockId=" + blockId +
                 ", wiMac='" + wiMac + '\'' +
                 ", measureWifiRssi=" + measureWifiRssi +
                 ", measureWifiDate=" + measureWifiDate +

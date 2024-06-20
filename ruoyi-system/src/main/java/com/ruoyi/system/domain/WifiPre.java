@@ -10,9 +10,6 @@ public class WifiPre {
     @Excel(name = "区域Id")
     private Long areaId;
 
-    @Excel(name = "区域下的blockId")
-    private Long blockId;
-
     /** x轴 */
     @Excel(name = "x轴")
     private Float poX;
@@ -39,14 +36,6 @@ public class WifiPre {
 
     public void setAreaId(Long areaId) {
         this.areaId = areaId;
-    }
-
-    public Long getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Long blockId) {
-        this.blockId = blockId;
     }
 
     public Float getPoX() {
@@ -78,7 +67,7 @@ public class WifiPre {
         return "WifiPre{" +
                 "apMac='" + apMac + '\'' +
                 ", areaId='" + areaId + '\'' +
-                ", blockId='" + blockId + '\'' +
+                ", blockId='" +
                 ", poX=" + poX +
                 ", poY=" + poY +
                 ", poZ=" + poZ +

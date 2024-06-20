@@ -107,6 +107,14 @@ public class Positiontable extends BaseEntity
         this.poZ = poZ;
     }
 
+
+    public Positiontable(Float poX, Float poY, Float poZ,String poName){
+        this.poX = poX;
+        this.poY = poY;
+        this.poZ = poZ;
+        this.poName = poName;
+    }
+
     public Positiontable(){
 
     }

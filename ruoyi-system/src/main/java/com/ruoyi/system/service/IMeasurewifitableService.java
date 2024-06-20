@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.Measurewifitable;
 
 /**
@@ -58,4 +60,6 @@ public interface IMeasurewifitableService
      * @return 结果
      */
     public int deleteMeasurewifitableByMeasureWifiId(Long measureWifiId);
+
+    String importMeasureWifitable(List<Measurewifitable> measurewifitableList, Boolean isUpdateSupport);
 }

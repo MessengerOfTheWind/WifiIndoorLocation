@@ -123,7 +123,6 @@ public class WifitableController extends BaseController
     {
         String apMac= wifiPre.getApMac();
         Long areaId = wifiPre.getAreaId();
-        Long blockId = wifiPre.getBlockId();
         Float X = wifiPre.getPoX();
         Float Y = wifiPre.getPoY();
         Float Z = wifiPre.getPoZ();
@@ -136,22 +135,19 @@ public class WifitableController extends BaseController
         Wifitable wifitable = new Wifitable();
         wifitable.setApId(apList.get(0).getApId());
         // 获取对应的poId
-        Positiontable positiontable = new Positiontable();
-        positiontable.setPoX(X);
-        positiontable.setPoY(Y);
-        positiontable.setPoZ(Z);
-        positiontable.setPoName("XYZ/finger position");
+        Positiontable positiontable = new Positiontable("XYZ/finger position",areaId,X,Y,Z);
+        // 获取位置id
         List<Positiontable> poList = positiontableService.selectPositiontableList(positiontable);
         wifitable.setPoId(poList.get(0).getPoId());
         // 获取指纹表中的所有信号
-        Measurewifitable measurewifitable = new Measurewifitable(areaId, blockId,apMac,X,Y,Z);
+        Measurewifitable measurewifitable = new Measurewifitable(areaId,apMac,X,Y,Z);
         List<Measurewifitable> measurewifitableList = measurewifitableService.selectMeasurewifitableList(measurewifitable);
         // 求这些信号的平均值
         int averTotal = 0;
         for (int i = 0; i < measurewifitableList.size(); i++) {
             averTotal += measurewifitableList.get(i).getMeasureWifiRssi();
         }
-        Integer aver = averTotal/measurewifitableList.size();
+        Integer aver = (int)Math.round((double) averTotal/measurewifitableList.size());
 //      List<Wifitable> wifitableList = wifitableService.selectWifitableList()
         wifitable.setWiRssi(aver);
         return toAjax(wifitableService.updateWifitable(wifitable));
