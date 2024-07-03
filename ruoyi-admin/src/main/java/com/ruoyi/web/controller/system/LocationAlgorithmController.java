@@ -20,7 +20,7 @@
 //
 ///**
 // * 【定位算法】Controller
-// *
+// *a
 // * @author ruoyi
 // * @date 2024-03-30
 // */
@@ -44,7 +44,8 @@
 //        Aptable ap = new Aptable(areaId);
 //        List<Aptable> apList = aptableService.selectAptableList(ap);
 //
-//        return success(aptableService.selectAptableByApId(apId));
+////        return success(aptableService.selectAptableByApId(apId));
+//        return success(1);
 //    }
 //
 //    @ApiOperation("查询定位")

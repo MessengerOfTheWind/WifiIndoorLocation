@@ -1,44 +1,47 @@
 package com.ruoyi.system.domain.localtion;
 
+import org.springframework.security.core.userdetails.User;
+
+import java.util.List;
+
 public class ApSignal {
 //    apName,apMac,apRssi
-    /** wifi名称 */
-    private String apName;
-    /** wifi物理地址 */
-    private String apMac;
-    /** wifi信号值 */
-    private String apRssi;
+    private LocationUser user;
 
-    public String getApName() {
-        return apName;
+    /** wifi mac和信号值的集合 */
+    private List<Signal> signalList;
+
+    public ApSignal(LocationUser user, List<Signal> signalList) {
+        this.user = user;
+        this.signalList = signalList;
     }
 
-    public void setApName(String apName) {
-        this.apName = apName;
+    public ApSignal(List<Signal> signalList) {
+        this.signalList = signalList;
     }
 
-    public String getApMac() {
-        return apMac;
+    public LocationUser getUser() {
+        return user;
     }
 
-    public void setApMac(String apMac) {
-        this.apMac = apMac;
+    public void setUser(LocationUser user) {
+        this.user = user;
     }
 
-    public String getApRssi() {
-        return apRssi;
+    public List<Signal> getSignalList() {
+        return signalList;
     }
 
-    public void setApRssi(String apRssi) {
-        this.apRssi = apRssi;
+    public void setSignalList(List<Signal> signalList) {
+        this.signalList = signalList;
     }
+
 
     @Override
     public String toString() {
-        return "ap_signal{" +
-                "apName='" + apName + '\'' +
-                ", apMac='" + apMac + '\'' +
-                ", apRssi='" + apRssi + '\'' +
+        return "ApSignal{" +
+                "user=" + user +
+                ", signalList=" + signalList +
                 '}';
     }
 }

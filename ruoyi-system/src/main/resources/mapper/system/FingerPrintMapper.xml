@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.FingerprintMapper">
+
+    <resultMap type="WifiView" id="WifiViewResult">
+        <result property="areaName"    column="area_name"    />
+        <result property="apName"    column="ap_name"    />
+        <result property="poX"    column="po_x"    />
+        <result property="poY"    column="po_y"    />
+        <result property="poZ"    column="po_z"    />
+        <result property="wiRssi"    column="wi_rssi"    />
+        <result property="wiDate" column="wi_date" />
+    </resultMap>
+
+    <sql id="selectFingerprintVo">
+        SELECT
+            areatable.area_name AS area_name,
+            aptable.ap_name AS ap_name,
+            positiontable.po_x AS po_x,
+            positiontable.po_y AS po_y,
+            positiontable.po_z AS po_z,
+            wifitable.wi_rssi AS wi_rssi,
+            wifitable.wi_date AS wi_date
+        FROM
+            wifitable
+                JOIN aptable ON wifitable.ap_id = aptable.ap_id
+                JOIN (positiontable JOIN areatable ON positiontable.area_id = areatable.area_id) ON wifitable.po_id = positiontable.po_id
+    </sql>
+
+    <select id="selectFingerprintList" parameterType="WifiView" resultMap="WifiViewResult">
+        <include refid="selectFingerprintVo"/>
+        <where>
+            <if test="areaName != null "> and area_name = #{areaName}</if>
+            <if test="apName != null  and apName != ''"> and ap_name = #{apName}</if>
+            <if test="poX != null  and poX != ''"> and po_x = #{poX}</if>
+            <if test="poY != null "> and po_y = #{poY}</if>
+            <if test="poZ != null  and poX != ''"> and po_z = #{poZ}</if>
+            <if test="wiRssi != null  and poY != ''"> and wi_rssi = #{wiRssi}</if>
+        </where>
+    </select>
+
+</mapper>
+
