@@ -16,5 +16,32 @@ public class Cal {
         System.out.println("预测的位置: " + predictedLocation);
         return predictedLocation;
     }
+
+
+    public static String calMutiple(List<Finger> dataList, List<Integer> newPoint){
+        int minIndex = -1;
+        int minDifference = 999999999;
+        for (int i = 0; i < dataList.size(); i++) {
+            List<Integer> currentData = dataList.get(i).getRssiList();
+            int currentDifference = calculateDifference(currentData, newPoint);
+            if (currentDifference <= minDifference) {
+                minDifference = currentDifference;
+                minIndex = i;
+            }
+        }
+        return dataList.get(minIndex).getXYZ();
+    }
+
+    public static Integer calculateDifference(List<Integer> currentData, List<Integer> targetData){
+        int m = 1;
+        for (int i = 0; i < currentData.size(); i++){
+             int gap = Math.abs(currentData.get(i) - targetData.get(i));
+             if(gap==0){
+                 gap = 1;
+             }
+             m = m* gap;
+        }
+        return m;
+    }
 }
 

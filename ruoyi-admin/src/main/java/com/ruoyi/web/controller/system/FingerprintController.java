@@ -109,7 +109,8 @@ public class FingerprintController extends BaseController {
             });
             System.out.println(fingerList);
         });
-        String predictionLocation = Cal.cal(fingerList, compareRssi);
+//        String predictionLocation = Cal.cal(fingerList, compareRssi);
+        String predictionLocation = Cal.calMutiple(fingerList, compareRssi);
         UserLocation userLocation = new UserLocation(userWifiRssi.getUser(),37L,predictionLocation);
         userLocationService.insertUserLocation(userLocation);
         return new AjaxResult(1, predictionLocation);
