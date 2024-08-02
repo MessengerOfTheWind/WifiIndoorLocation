@@ -62,7 +62,15 @@ public class Measurewifitable extends BaseEntity
         this.poZ = poZ;
     }
 
-
+    public Measurewifitable(Long areaId, String wiMac, Integer measureWifiRssi, Date measureWifiDate, Float poX, Float poY, Float poZ) {
+        this.areaId = areaId;
+        this.wiMac = wiMac;
+        this.measureWifiRssi = measureWifiRssi;
+        this.measureWifiDate = measureWifiDate;
+        this.poX = poX;
+        this.poY = poY;
+        this.poZ = poZ;
+    }
 
     public Long getMeasureWifiId() {
         return measureWifiId;

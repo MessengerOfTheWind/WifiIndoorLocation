@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.Measurewifitable;
+import com.ruoyi.system.domain.dto.MeasureApRssi;
 
 /**
  * 【请填写功能名称】Service接口
@@ -32,10 +33,10 @@ public interface IMeasurewifitableService
     /**
      * 新增【请填写功能名称】
      * 
-     * @param measurewifitable 【请填写功能名称】
+     * @param measureApRssi 【请填写功能名称】
      * @return 结果
      */
-    public int insertMeasurewifitable(Measurewifitable measurewifitable);
+    public int insertMeasurewifitable(MeasureApRssi measureApRssi);
 
     /**
      * 修改【请填写功能名称】

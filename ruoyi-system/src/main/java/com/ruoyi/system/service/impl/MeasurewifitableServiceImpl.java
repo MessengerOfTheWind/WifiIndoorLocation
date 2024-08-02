@@ -2,9 +2,13 @@ package com.ruoyi.system.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.dto.MeasureApRssi;
+import com.ruoyi.system.domain.vo.MeasureWifiVo;
+import jdk.jpackage.internal.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ public class MeasurewifitableServiceImpl implements IMeasurewifitableService
 {
     @Autowired
     private MeasurewifitableMapper measurewifitableMapper;
+    private static final Logger logger = LoggerFactory.getLogger(MeasurewifitableServiceImpl.class);
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
     /**
@@ -53,16 +58,31 @@ public class MeasurewifitableServiceImpl implements IMeasurewifitableService
     /**
      * 新增【请填写功能名称】
      * 
-     * @param measurewifitable 【请填写功能名称】
+     * @param measureApRssi 【请填写功能名称】
      * @return 结果
      */
     @Override
-    public int insertMeasurewifitable(Measurewifitable measurewifitable)
+    public int insertMeasurewifitable(MeasureApRssi measureApRssi)
     {
-        //载入当前日期
-        Date date = new Date();
-        measurewifitable.setMeasureWifiDate(new java.sql.Date(date.getTime()));
-        return measurewifitableMapper.insertMeasurewifitable(measurewifitable);
+        // 将当前measureApRssi数据做拆分
+        Long areaId = measureApRssi.getAreaId(); //区域id号
+        Float x = measureApRssi.getPoX(); // x轴
+        Float y = measureApRssi.getPoY(); // y轴
+        Float z = measureApRssi.getPoZ(); // z轴
+        Date date = new java.sql.Date(new Date().getTime());
+        try{
+            for (MeasureWifiVo measureWifiVo: measureApRssi.getMeasureWifiVos()
+            ) {
+                // 新增measurewifiTable
+                Measurewifitable measurewifitable = new Measurewifitable(areaId, measureWifiVo.getWiMac(), measureWifiVo.getMeasureWifiRssi(),date, x, y, z);
+                logger.info("Having inserted wifi " + measureWifiVo.getWiMac().toString()+ "....");
+                measurewifitableMapper.insertMeasurewifitable(measurewifitable);
+            }
+        }catch (Exception e){
+                logger.error("Insert wifiList Error");
+                return 0;
+        }
+        return 1;
     }
 
     /**
