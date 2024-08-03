@@ -114,6 +114,11 @@ public class Aptable extends BaseEntity
             .toString();
     }
 
+    public Aptable(String apMac, Long areaId) {
+        this.apMac = apMac;
+        this.areaId = areaId;
+    }
+
     public Aptable(Long apId, String apName, String apMac, Long areaId, Long poId, String apDescription) {
         this.apId = apId;
         this.apName = apName;

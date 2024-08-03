@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.Wifitable;
+import com.ruoyi.system.domain.dto.WifiFinger;
 
 /**
  * 【请填写功能名称】Service接口
@@ -34,6 +35,13 @@ public interface IWifitableService
      * @return 结果
      */
     public int insertWifitable(Wifitable wifitable);
+
+    /**
+     * 新增或者更新wifitable
+     * @param wifiFinger
+     * @return int
+     */
+    public int insertOrUpdate(WifiFinger wifiFinger);
 
     /**
      * 修改【请填写功能名称】

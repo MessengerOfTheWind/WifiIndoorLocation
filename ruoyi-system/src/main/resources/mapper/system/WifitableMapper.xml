@@ -12,9 +12,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="wiDate"    column="wi_date"    />
     </resultMap>
 
+    <resultMap type="WifiTableVo" id="WifiTableDtoResult">
+        <result property="poId"    column="po_id"    />
+        <result property="apId"    column="ap_id"    />
+    </resultMap>
+
     <sql id="selectWifitableVo">
         select wi_id, po_id, ap_id, wi_rssi, wi_date from wifitable
     </sql>
+
+    <select id="countWifiTable" parameterType="WifiTableVo" resultMap="WifitableResult">
+        select po_id,ap_id
+        from wifitable
+        where po_id = #{poId}
+        and ap_id = #{apId}
+    </select>
 
     <select id="selectWifitableList" parameterType="Wifitable" resultMap="WifitableResult">
         <include refid="selectWifitableVo"/>

@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Wifitable;
+import com.ruoyi.system.domain.vo.WifiTableVo;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -19,6 +20,8 @@ public interface WifitableMapper
      */
     public Wifitable selectWifitableByWiId(Long wiId);
 
+    public Wifitable countWifiTable(WifiTableVo wifiTableVo);
+
     /**
      * 查询【请填写功能名称】列表
      * 
@@ -26,6 +29,11 @@ public interface WifitableMapper
      * @return 【请填写功能名称】集合
      */
     public List<Wifitable> selectWifitableList(Wifitable wifitable);
+
+    /**
+     * 统计【wifiTable】个数
+     * @param
+     */
 
     /**
      * 新增【请填写功能名称】

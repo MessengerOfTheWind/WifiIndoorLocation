@@ -87,4 +87,13 @@ public class Wifitable extends BaseEntity
             .append("wiDate", getWiDate())
             .toString();
     }
+
+    public Wifitable() {
+    }
+
+    public Wifitable(Long poId, Long apId, Integer wiRssi) {
+        this.poId = poId;
+        this.apId = apId;
+        this.wiRssi = wiRssi;
+    }
 }

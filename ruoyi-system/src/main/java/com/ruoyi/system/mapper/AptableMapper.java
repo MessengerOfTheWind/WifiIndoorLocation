@@ -18,6 +18,7 @@ public interface AptableMapper
      * @return 【请填写功能名称】
      */
     public Aptable selectAptableByApId(Long apId);
+    public Long selectByMacApIdArea(Aptable aptable);
 
     /**
      * 查询【请填写功能名称】列表

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson2.function.impl.ToString;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.dto.WifiFinger;
 import com.ruoyi.system.mapper.MeasurewifitableMapper;
 import com.ruoyi.system.service.IAptableService;
 import com.ruoyi.system.service.IMeasurewifitableService;
@@ -58,7 +59,7 @@ public class WifitableController extends BaseController
      * 查询【请填写功能名称】列表
      */
     @ApiOperation("查询wifi指纹库列表")
-    @PreAuthorize("@ss.hasPermi('system:wifitable:list')")
+//    @PreAuthorize("@ss.hasPermi('system:wifitable:list')")
     @GetMapping("/list")
     public TableDataInfo list(Wifitable wifitable)
     {
@@ -94,13 +95,15 @@ public class WifitableController extends BaseController
      * 新增【请填写功能名称】
      */
     @ApiOperation("新增指纹")
-    @PreAuthorize("@ss.hasPermi('system:wifitable:add')")
+//    @PreAuthorize("@ss.hasPermi('system:wifitable:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody Wifitable wifitable)
+    @PostMapping("/updateOrInsert")
+    public AjaxResult addOrUpdate(@RequestBody WifiFinger wifiFinger)
     {
-        return toAjax(wifitableService.insertWifitable(wifitable));
+        return toAjax(wifitableService.insertOrUpdate(wifiFinger));
     }
+
+
 
     /**
      * 修改【请填写功能名称】

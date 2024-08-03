@@ -13,9 +13,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="poZ"    column="po_z"    />
     </resultMap>
 
+    <resultMap type="PositionVo" id="PositionIdResult">
+        <result property="areaId"    column="area_id"    />
+        <result property="poX"    column="po_x"    />
+        <result property="poY"    column="po_y"    />
+        <result property="poZ"    column="po_z"    />
+    </resultMap>
+
     <sql id="selectPositiontableVo">
         select po_id, po_name, area_id, po_x, po_y, po_z from positiontable
     </sql>
+
+    <sql id="selectPoIdVo">
+        select po_id from positiontable
+    </sql>
+
+
+    <select id="selectPoIdByPosition" parameterType="PositionVo" resultMap="PositiontableResult">
+        <include refid="selectPoIdVo"/>
+        <where>
+            <if test="poName != null  and poName != ''"> and po_name like concat('%', #{poName}, '%')</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="poX != null  and poX != ''"> and po_x = #{poX}</if>
+            <if test="poY != null  and poY != ''"> and po_y = #{poY}</if>
+            <if test="poZ != null  and poZ != ''"> and po_z = #{poZ}</if>
+        </where>
+    </select>
+
 
     <select id="selectPositiontableList" parameterType="Positiontable" resultMap="PositiontableResult">
         <include refid="selectPositiontableVo"/>

@@ -19,6 +19,8 @@ public interface PositiontableMapper
      */
     public Positiontable selectPositiontableByPoId(Long poId);
 
+    public Positiontable selectPoIdByPosition(Positiontable positiontable);
+
     /**
      * 查询【请填写功能名称】列表
      * 

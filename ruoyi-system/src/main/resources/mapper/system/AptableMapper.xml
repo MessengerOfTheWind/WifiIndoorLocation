@@ -17,6 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select ap_id, ap_name, ap_mac, area_id, po_id, ap_description from aptable
     </sql>
 
+    <!-- 定义查询语句，通过 mac 查找 apid -->
+    <select id="selectByMacApIdArea" parameterType="Aptable" resultType="Long">
+        SELECT ap_id
+        FROM aptable
+        WHERE ap_mac = #{apMac}
+        and area_id = #{areaId}
+    </select>
+
     <select id="selectAptableList" parameterType="Aptable" resultMap="AptableResult">
         <include refid="selectAptableVo"/>
         <where>  
