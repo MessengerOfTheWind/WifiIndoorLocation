@@ -8,7 +8,6 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.dto.MeasureApRssi;
 import com.ruoyi.system.domain.vo.MeasureWifiVo;
-import jdk.jpackage.internal.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
