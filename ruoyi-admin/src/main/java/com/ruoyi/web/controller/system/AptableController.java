@@ -114,8 +114,8 @@ public class AptableController extends BaseController
         // 插入ap信息
         try{
             Aptable aptable = new Aptable(poTableList.get(0).getAreaId(), apPositionTable.getApName(), apPositionTable.getApMac(), apPositionTable.getAreaId(), poTableList.get(0).getPoId(), apPositionTable.getApDescription());
-            aptableService.insertAptable(aptable);
-            return toAjax(aptableService.insertAptable(aptable));
+            int res = aptableService.insertAptable(aptable);
+            return toAjax(res);
         }
         catch (Exception e){
             System.out.println("ap插入失败");
