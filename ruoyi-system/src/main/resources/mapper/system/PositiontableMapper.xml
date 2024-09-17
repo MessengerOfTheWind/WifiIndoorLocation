@@ -28,6 +28,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select po_id from positiontable
     </sql>
 
+    <select id="selectAreaIdList" parameterType="Long" resultMap="PositiontableResult">
+        <include refid="selectPositiontableVo">
+        </include>
+        where area_id = #{areaId}
+    </select>
+
 
     <select id="selectPoIdByPosition" parameterType="PositionVo" resultMap="PositiontableResult">
         <include refid="selectPoIdVo"/>

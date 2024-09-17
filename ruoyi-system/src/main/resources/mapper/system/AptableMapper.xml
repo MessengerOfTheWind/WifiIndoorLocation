@@ -25,6 +25,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and area_id = #{areaId}
     </select>
 
+    <select id="selectByApName" parameterType="String" resultMap="AptableResult">
+        <include refid="selectAptableVo"/>
+        where ap_name = #{apName}
+    </select>
+
     <select id="selectAptableList" parameterType="Aptable" resultMap="AptableResult">
         <include refid="selectAptableVo"/>
         <where>  

@@ -21,6 +21,12 @@ public interface AptableMapper
     public Long selectByMacApIdArea(Aptable aptable);
 
     /**
+     * 查询【依据apName查找对象】
+     * @param apName
+     * @return
+     */
+    public Aptable selectByApName(String apName);
+    /**
      * 查询【请填写功能名称】列表
      * 
      * @param aptable 【请填写功能名称】

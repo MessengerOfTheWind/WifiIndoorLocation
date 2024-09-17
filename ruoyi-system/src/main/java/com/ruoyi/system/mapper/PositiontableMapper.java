@@ -19,6 +19,13 @@ public interface PositiontableMapper
      */
     public Positiontable selectPositiontableByPoId(Long poId);
 
+    /**
+     * 查询【依据区域id查询positionList】
+     * @param areaId 【区域号】
+     * @return 【该区域的所有position】
+     */
+
+    public List<Positiontable> selectAreaIdList(Long areaId);
     public Positiontable selectPoIdByPosition(Positiontable positiontable);
 
     /**

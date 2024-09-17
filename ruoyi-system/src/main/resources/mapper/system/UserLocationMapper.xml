@@ -39,14 +39,12 @@
             <if test="userName != null and userName != ''">user_name,</if>
             <if test="userAreaId != null">user_area_id,</if>
             <if test="userXyz != null and userName != ''">user_xyz,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userName != null and userName != ''">#{userName},</if>
             <if test="userAreaId != null">#{userAreaId},</if>
             <if test="userXyz != null and userName != ''">#{userXyz},</if>
-            <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
     </insert>

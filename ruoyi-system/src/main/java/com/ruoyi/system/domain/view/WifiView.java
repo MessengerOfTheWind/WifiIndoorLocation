@@ -29,6 +29,10 @@ public class WifiView {
 
     }
 
+    public WifiView(String areaName) {
+        this.areaName = areaName;
+    }
+
     public String getAreaName() {
         return areaName;
     }

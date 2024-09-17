@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.view.WifiTableViewMapper">
+
+    <resultMap id="wifiTableViewResult" type="WifiTableView">
+        <result column="wi_id" property="wiId" />
+        <result column="po_id" property="poId" />
+        <result column="ap_id" property="apId" />
+        <result column="wi_rssi" property="wiRssi" />
+        <result column="area_id" property="areaId" />
+    </resultMap>
+
+    <sql id="selectWifiTableViewVo">
+        select ap_id, wi_rssi, area_id, wi_id, po_id from wifi_table_view
+    </sql>
+    
+    <select id="selectWifiTableViewByAreaId" parameterType="Long" resultMap="wifiTableViewResult">
+        <include refid="selectWifiTableViewVo"></include>
+        <where>
+            <if test="areaId != null">
+                area_id = #{areaId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

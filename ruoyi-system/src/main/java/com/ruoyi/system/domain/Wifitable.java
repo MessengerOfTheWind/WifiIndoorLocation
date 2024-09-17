@@ -91,6 +91,10 @@ public class Wifitable extends BaseEntity
     public Wifitable() {
     }
 
+    public Wifitable(Long poId) {
+        this.poId = poId;
+    }
+
     public Wifitable(Long poId, Long apId, Integer wiRssi) {
         this.poId = poId;
         this.apId = apId;

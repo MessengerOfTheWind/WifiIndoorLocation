@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.system.domain.UserLocation;
+import com.ruoyi.system.domain.view.UserWifiRssi;
 
 import java.util.List;
 
@@ -29,5 +30,11 @@ public interface IUserLocationService {
      * @return 结果
      */
     public int insertUserLocation(UserLocation userLocation);
+
+
+    /**
+     *
+     */
+    public String computeUserLocation(UserWifiRssi userWifiRssi);
 
 }
