@@ -18,4 +18,10 @@ public interface IScreenMonitorService {
     public List<ScreenMonitorView> selectScreenMonitorViewList(ScreenMonitorView screenMonitorView);
 
     public List<List<String>> GetPersonDistributionExcel();
+
+    public List<List<String>> GetPersonDistributionDensity();
+
+    public List<List<String>> GetPersonDistributionEchart();
+
+    public List<List<String>> GetPersonDistributionPredict();
 }

@@ -34,5 +34,23 @@ public class BigScreenMonitor extends BaseController {
         return screenMonitorService.GetPersonDistributionExcel();
     }
 
+    @ApiOperation("获取人员分布密度图")
+    @GetMapping("/personDistributionDensityC")
+    public List<List<String>> GetPersonDistributeDensity(){
+        return screenMonitorService.GetPersonDistributionDensity();
+    }
+
+    @ApiOperation("获取人员区域碳排放图")
+    @GetMapping("/personDistributionEchartC")
+    public List<List<String>> GetPersonDistributeEchart(){
+        return screenMonitorService.GetPersonDistributionEchart();
+    }
+
+    @ApiOperation("获取人员区域预测")
+    @GetMapping("/personDistributionPredictC")
+    public List<List<String>> GetPersonDistributePredict(){
+        return screenMonitorService.GetPersonDistributionPredict();
+    }
+
 
 }
