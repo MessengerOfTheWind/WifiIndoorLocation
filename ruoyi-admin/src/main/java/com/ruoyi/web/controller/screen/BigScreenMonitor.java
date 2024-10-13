@@ -27,6 +27,4 @@ public class BigScreenMonitor extends BaseController {
         List<PersonDistributionDonut> personDistributionDonutList = screenMonitorService.GetPersonDistributionDonut();
         return getDataTable(personDistributionDonutList);
     }
-
-
 }
