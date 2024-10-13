@@ -16,4 +16,6 @@ public interface IScreenMonitorService {
     public List<PersonDistributionDonut> GetPersonDistributionDonut();
 
     public List<ScreenMonitorView> selectScreenMonitorViewList(ScreenMonitorView screenMonitorView);
+
+    public List<List<String>> GetPersonDistributionExcel();
 }
