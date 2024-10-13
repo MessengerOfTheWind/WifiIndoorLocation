@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.dto.MeasureApOrder;
 import com.ruoyi.system.domain.dto.MeasureApRssi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -103,10 +104,10 @@ public class MeasurewifitableController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:measurewifitable:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MeasureApRssi measureApRssi)
+    public AjaxResult add(@RequestBody List<MeasureApOrder> measureApOrders)
     {
-
-        return toAjax(measurewifitableService.insertMeasurewifitable(measureApRssi));
+//        return toAjax(measurewifitableService.insertMeasurewifitable(measureApRssi));
+        return toAjax(measurewifitableService.insertMeasureWifiTableTest(measureApOrders));
     }
 
     /**
