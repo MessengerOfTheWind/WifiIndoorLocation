@@ -44,4 +44,20 @@ public class ScreenMonitorServiceImpl implements IScreenMonitorService {
     public List<ScreenMonitorView> selectScreenMonitorViewList(ScreenMonitorView screenMonitorView) {
         return screenMonitorMapper.selectScreenMonitorViewList(screenMonitorView);
     }
+
+    @Override
+    public List<List<String>> GetPersonDistributionExcel() {
+        ScreenMonitorView screenMonitorView = new ScreenMonitorView();
+        List<ScreenMonitorView> screenMonitorViewList = screenMonitorMapper.selectScreenMonitorViewList(screenMonitorView);
+        List<List<String>> res = new ArrayList<>();
+        for (ScreenMonitorView sc: screenMonitorViewList
+             ) {
+            List<String> perMes = new ArrayList<>();
+            perMes.add(sc.getUserName());
+            perMes.add(sc.getAreaName());
+            perMes.add(sc.getUserXyz());
+            res.add(perMes);
+        }
+        return res;
+    }
 }

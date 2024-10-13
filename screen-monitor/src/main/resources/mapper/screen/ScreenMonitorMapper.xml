@@ -13,7 +13,7 @@
     </resultMap>
 
     <sql id="selectScreenMonitorView">
-        select user_location_id, area_name, user_xyz, online_status, create_time, update_time from screen_monitor_view
+        select user_location_id, user_name, area_name, user_xyz, online_status, create_time, update_time from screen_monitor_view
     </sql>
 
     <select id="selectScreenMonitorViewList" parameterType="ScreenMonitorView" resultMap="ScreenMonitorResult">

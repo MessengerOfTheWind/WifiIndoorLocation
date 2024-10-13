@@ -27,4 +27,12 @@ public class BigScreenMonitor extends BaseController {
         List<PersonDistributionDonut> personDistributionDonutList = screenMonitorService.GetPersonDistributionDonut();
         return getDataTable(personDistributionDonutList);
     }
+
+    @ApiOperation("获取人员分布excel图")
+    @GetMapping("/personDistributionExcelC")
+    public List<List<String>> GetPersonDistributeExcel(){
+        return screenMonitorService.GetPersonDistributionExcel();
+    }
+
+
 }

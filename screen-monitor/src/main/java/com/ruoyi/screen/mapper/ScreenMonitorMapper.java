@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ScreenMonitorMapper {
     public List<ScreenMonitorView> selectScreenMonitorViewList(ScreenMonitorView screenMonitorView);
+
+
 }
