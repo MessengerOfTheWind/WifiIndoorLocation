@@ -19,7 +19,7 @@
     <select id="selectWifiTableViewByAreaId" parameterType="Long" resultMap="wifiTableViewResult">
         <include refid="selectWifiTableViewVo"></include>
         <where>
-            <if test="areaId != null">
+            <if test="areaId != null" >
                 area_id = #{areaId}
             </if>
         </where>

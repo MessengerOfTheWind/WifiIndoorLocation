@@ -39,6 +39,10 @@ public class Aptable extends BaseEntity
     @Excel(name = "描述")
     private String apDescription;
 
+    /** ap的权重 */
+    @Excel(name = "ap的权重")
+    private Integer apWeight;
+
     public void setApId(Long apId) 
     {
         this.apId = apId;
@@ -94,6 +98,23 @@ public class Aptable extends BaseEntity
         return apDescription;
     }
 
+    public Integer getApWeight() {
+        return apWeight;
+    }
+
+    public void setApWeight(Integer apWeight) {
+        this.apWeight = apWeight;
+    }
+
+    public Aptable(Long apId, String apName, String apMac, Long areaId, Long poId, String apDescription, Integer apWeight) {
+        this.apId = apId;
+        this.apName = apName;
+        this.apMac = apMac;
+        this.areaId = areaId;
+        this.poId = poId;
+        this.apDescription = apDescription;
+        this.apWeight = apWeight;
+    }
 
     public Aptable(Long areaId) {
         this.areaId = areaId;

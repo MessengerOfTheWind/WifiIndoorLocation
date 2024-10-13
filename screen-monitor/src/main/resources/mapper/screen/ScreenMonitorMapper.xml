@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.screen.mapper.ScreenMonitorMapper">
+    <resultMap id="ScreenMonitorResult" type="ScreenMonitorView">
+        <result column="user_location_id" property="userLocationId"/>
+        <result column="area_name" property="areaName"/>
+        <result column="user_xyz" property="userXyz"/>
+        <result column="online_status" property="onlineStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectScreenMonitorView">
+        select user_location_id, area_name, user_xyz, online_status, create_time, update_time from screen_monitor_view
+    </sql>
+
+    <select id="selectScreenMonitorViewList" parameterType="ScreenMonitorView" resultMap="ScreenMonitorResult">
+        <include refid="selectScreenMonitorView" />
+        <where>
+            <if test="areaName != null and areaName != ''"> and area_name = #{areaName}</if>
+            <if test="onlineStatus != null and onlineStatus != ''"> and online_status = #{onlineStatus}</if>
+            <if test="updateTime != null and updateTime != ''">
+                AND update_time BETWEEN DATE_SUB(#{updateTime}, INTERVAL 10 MINUTE) AND #{updateTime}
+            </if>
+        </where>
+    </select>
+</mapper>

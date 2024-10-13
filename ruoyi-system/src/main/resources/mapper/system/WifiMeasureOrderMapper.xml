@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WifiMeasureOrderMapper">
+
+    <!-- 定义ResultMap，映射数据库字段到实体类 -->
+    <resultMap id="WifiMeasurementsResult" type="WifiMeasurements">
+        <result property="measureWifiId" column="measure_wifi_id"/>
+        <result property="areaId" column="area_id"/>
+        <result property="apName" column="ap_name"/>
+        <result property="measureWifiRssi" column="measure_wifi_rssi"/>
+        <result property="measureWifiDate" column="measure_wifi_date"/>
+        <result property="poX" column="po_x"/>
+        <result property="poY" column="po_y"/>
+        <result property="poZ" column="po_z"/>
+        <result property="order" column="order"/>
+    </resultMap>
+
+    <!-- 基础查询SQL -->
+    <sql id="selectWifiMeasurementsVo">
+        SELECT measure_wifi_id, area_id, ap_name, measure_wifi_rssi, measure_wifi_date, po_x, po_y, po_z, `order`
+        FROM wifi_measurements_with_order
+    </sql>
+
+    <!-- 查询列表 -->
+    <select id="selectWifiMeasurementsList" parameterType="WifiMeasurements" resultMap="WifiMeasurementsResult">
+        <include refid="selectWifiMeasurementsVo"/>
+        <where>
+            <if test="areaId != null">AND area_id = #{areaId}</if>
+            <if test="apName != null and apName != ''">AND ap_name = #{apName}</if>
+            <if test="measureWifiRssi != null">AND measure_wifi_rssi = #{measureWifiRssi}</if>
+            <if test="measureWifiDate != null">AND measure_wifi_date = #{measureWifiDate}</if>
+            <if test="poX != null">AND po_x = #{poX}</if>
+            <if test="poY != null">AND po_y = #{poY}</if>
+            <if test="poZ != null">AND po_z = #{poZ}</if>
+            <if test="order != null">AND `order` = #{order}</if>
+        </where>
+    </select>
+
+    <!-- 根据ID查询单条记录 -->
+    <select id="selectWifiMeasurementsById" parameterType="Long" resultMap="WifiMeasurementsResult">
+        <include refid="selectWifiMeasurementsVo"/>
+        WHERE measure_wifi_id = #{measureWifiId}
+    </select>
+
+    <!-- 插入记录 -->
+    <insert id="insertWifiMeasurements" parameterType="WifiMeasurements" useGeneratedKeys="true" keyProperty="measureWifiId">
+        insert into wifi_measurements_with_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">area_id,</if>
+            <if test="apName != null and apName != ''">ap_name,</if>
+            <if test="measureWifiRssi != null">measure_wifi_rssi,</if>
+            <if test="measureWifiDate != null">measure_wifi_date,</if>
+            <if test="poX != null">po_x,</if>
+            <if test="poY != null">po_y,</if>
+            <if test="poZ != null">po_z,</if>
+            <if test="order != null">`order`,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">#{areaId},</if>
+            <if test="apName != null and apName != ''">#{apName},</if>
+            <if test="measureWifiRssi != null">#{measureWifiRssi},</if>
+            <if test="measureWifiDate != null">#{measureWifiDate},</if>
+            <if test="poX != null">#{poX},</if>
+            <if test="poY != null">#{poY},</if>
+            <if test="poZ != null">#{poZ},</if>
+            <if test="order != null">#{order},</if>
+        </trim>
+    </insert>
+
+    <!-- 更新记录 -->
+    <update id="updateWifiMeasurements" parameterType="WifiMeasurements">
+        UPDATE wifi_measurements_with_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="apName != null and apName != ''">ap_name = #{apName},</if>
+            <if test="measureWifiRssi != null">measure_wifi_rssi = #{measureWifiRssi},</if>
+            <if test="measureWifiDate != null">measure_wifi_date = #{measureWifiDate},</if>
+            <if test="poX != null">po_x = #{poX},</if>
+            <if test="poY != null">po_y = #{poY},</if>
+            <if test="poZ != null">po_z = #{poZ},</if>
+            <if test="order != null">`order` = #{order},</if>
+        </trim>
+        WHERE measure_wifi_id = #{measureWifiId}
+    </update>
+
+    <!-- 删除单条记录 -->
+    <delete id="deleteWifiMeasurementsById" parameterType="Long">
+        DELETE FROM wifi_measurements_with_order WHERE measure_wifi_id = #{measureWifiId}
+    </delete>
+
+    <!-- 批量删除记录 -->
+    <delete id="deleteWifiMeasurementsByIds" parameterType="String">
+        DELETE FROM wifi_measurements_with_order WHERE measure_wifi_id IN
+        <foreach collection="array" item="measureWifiId" open="(" separator="," close=")">
+            #{measureWifiId}
+        </foreach>
+    </delete>
+
+</mapper>

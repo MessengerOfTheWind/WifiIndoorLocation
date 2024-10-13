@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.Measurewifitable;
+import com.ruoyi.system.domain.dto.MeasureApOrder;
 import com.ruoyi.system.domain.dto.MeasureApRssi;
 
 /**
@@ -37,6 +38,8 @@ public interface IMeasurewifitableService
      * @return 结果
      */
     public int insertMeasurewifitable(MeasureApRssi measureApRssi);
+
+    public int insertMeasureWifiTableTest(List<MeasureApOrder> measureApOrders);
 
     /**
      * 修改【请填写功能名称】

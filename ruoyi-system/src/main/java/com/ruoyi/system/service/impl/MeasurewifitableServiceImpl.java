@@ -2,12 +2,15 @@ package com.ruoyi.system.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
+import cn.hutool.core.lang.Snowflake;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.WifiMeasurements;
 import com.ruoyi.system.domain.dto.MeasureApRssi;
+import com.ruoyi.system.domain.dto.MeasureApOrder;
 import com.ruoyi.system.domain.vo.MeasureWifiVo;
+import com.ruoyi.system.mapper.WifiMeasureOrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.MeasurewifitableMapper;
 import com.ruoyi.system.domain.Measurewifitable;
 import com.ruoyi.system.service.IMeasurewifitableService;
+import cn.hutool.core.util.IdUtil;
 
 /**
  * 【请填写功能名称】Service业务层处理
@@ -27,8 +31,13 @@ public class MeasurewifitableServiceImpl implements IMeasurewifitableService
 {
     @Autowired
     private MeasurewifitableMapper measurewifitableMapper;
+
+    @Autowired
+    private WifiMeasureOrderMapper wifiMeasureOrderMapper;
     private static final Logger logger = LoggerFactory.getLogger(MeasurewifitableServiceImpl.class);
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
+
+
 
     /**
      * 查询【请填写功能名称】
@@ -73,13 +82,60 @@ public class MeasurewifitableServiceImpl implements IMeasurewifitableService
             for (MeasureWifiVo measureWifiVo: measureApRssi.getMeasureWifiVos()
             ) {
                 // 新增measurewifiTable
-                Measurewifitable measurewifitable = new Measurewifitable(areaId, measureWifiVo.getWiMac(), measureWifiVo.getMeasureWifiRssi(),date, x, y, z);
+                String mac = measureWifiVo.getWiMac();
+                Integer rssi = measureWifiVo.getMeasureWifiRssi();
+                Measurewifitable measurewifitable = new Measurewifitable(areaId, mac, rssi,date, x, y, z);
                 logger.info("Having inserted wifi " + measureWifiVo.getWiMac().toString()+ "....");
                 measurewifitableMapper.insertMeasurewifitable(measurewifitable);
+
             }
         }catch (Exception e){
                 logger.error("Insert wifiList Error");
                 return 0;
+        }
+        return 1;
+    }
+
+    /**
+     * 新增【请填写功能名称】
+     *
+     * @param measureApOrders 【请填写功能名称】
+     * @return 结果
+     */
+    @Override
+    public int insertMeasureWifiTableTest(List<MeasureApOrder> measureApOrders)
+    {
+        for (MeasureApOrder measureApOrder:measureApOrders
+             ) {
+            // 将当前measureApRssi数据做拆分
+            Long areaId = measureApOrder.getAreaId(); //区域id号
+            Float x = measureApOrder.getPoX(); // x轴
+            Float y = measureApOrder.getPoY(); // y轴
+            Float z = measureApOrder.getPoZ(); // z轴
+            Date date = new java.sql.Date(new Date().getTime());
+            long datacenterId = 1; // 数据中心ID
+            long machineId = 1;    // 机器ID
+            // 创建雪花算法生成器
+            Snowflake snowflake = IdUtil.getSnowflake(datacenterId, machineId);
+            Long orderId = snowflake.nextId();
+            try {
+                for (MeasureWifiVo measureWifiVo : measureApOrder.getMeasureWifiVos()
+                ) {
+                    // 新增measurewifiTable
+                    String mac = measureWifiVo.getWiMac();
+                    Integer rssi = measureWifiVo.getMeasureWifiRssi();
+                    Measurewifitable measurewifitable = new Measurewifitable(areaId, measureWifiVo.getWiMac(), measureWifiVo.getMeasureWifiRssi(), date, x, y, z);
+                    logger.info("Having inserted wifi " + measureWifiVo.getWiMac().toString() + "....");
+                    measurewifitableMapper.insertMeasurewifitable(measurewifitable);
+                    WifiMeasurements measurements = new WifiMeasurements(areaId, mac, rssi,date, x, y, z, orderId);
+                    Integer res = wifiMeasureOrderMapper.insertWifiMeasurements(measurements);
+                    System.out.printf(String.valueOf(res));
+                }
+            } catch (Exception e) {
+                logger.error("Insert wifiList Error");
+                System.out.println(e);
+                return 0;
+            }
         }
         return 1;
     }

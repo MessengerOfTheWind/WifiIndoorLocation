@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Aptable;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -9,6 +10,8 @@ import com.ruoyi.system.domain.Aptable;
  * @author ruoyi
  * @date 2024-03-30
  */
+
+@Mapper
 public interface AptableMapper 
 {
     /**

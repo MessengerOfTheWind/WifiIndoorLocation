@@ -49,4 +49,16 @@
         </trim>
     </insert>
 
+
+    <update id="updateUserLocation" parameterType="UserLocation">
+        UPDATE user_location
+        <set>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="userAreaId != null">user_area_id = #{userAreaId},</if>
+            <if test="userXyz != null and userName != ''">user_xyz = #{userXyz},</if>
+            update_time = NOW()
+        </set>
+        WHERE user_name = #{userName}
+    </update>
+
 </mapper>

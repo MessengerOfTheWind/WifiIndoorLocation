@@ -35,4 +35,6 @@ public interface UserLocationMapper
      */
     public int insertUserLocation(UserLocation userLocation);
 
+    public int updateUserLocation(UserLocation userLocation);
+
 }

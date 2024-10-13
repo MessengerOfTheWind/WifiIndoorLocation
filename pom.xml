@@ -155,6 +155,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 大屏监控模块 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>screen-monitor</artifactId>
+                <version>3.8.7</version>
+            </dependency>
+
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -172,6 +179,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>screen-monitor</module>
     </modules>
     <packaging>pom</packaging>
 
