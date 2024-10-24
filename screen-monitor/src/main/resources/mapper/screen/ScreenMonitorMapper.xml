@@ -26,4 +26,17 @@
             </if>
         </where>
     </select>
+
+
+
+    <!-- 用时间筛数据 -->
+    <select id="selectScreenMonitorViewListByTime" parameterType="java.util.Date" resultMap="ScreenMonitorResult">
+        select user_location_id, user_name, area_name, user_xyz, online_status, create_time, update_time
+        from screen_monitor_view
+        where update_time BETWEEN #{arg0} AND #{arg1}
+    </select>
+
+
+
+
 </mapper>
