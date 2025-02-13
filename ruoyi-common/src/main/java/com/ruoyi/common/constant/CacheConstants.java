@@ -41,4 +41,14 @@ public class CacheConstants
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
+
+    /**
+     * 手机验证码 redis key
+     */
+    public static final String MOBILE_CAPTCHA_CODE_KEY = "mobile_captcha_codes";
+
+    /**
+     * 短信验证码 redis key
+     */
+    public static final String SMS_CODE_KEY = "sms_key";
 }
