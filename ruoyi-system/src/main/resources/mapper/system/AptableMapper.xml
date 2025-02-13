@@ -11,11 +11,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="areaId"    column="area_id"    />
         <result property="poId"    column="po_id"    />
         <result property="apDescription"    column="ap_description"    />
-        <result property="apWeight"    column="ap_weight"    />
     </resultMap>
 
     <sql id="selectAptableVo">
-        select ap_id, ap_name, ap_mac, area_id, po_id, ap_description, ap_weight from aptable
+        select ap_id, ap_name, ap_mac, area_id, po_id, ap_description from aptable
     </sql>
 
     <!-- 定义查询语句，通过 mac 查找 apid -->
