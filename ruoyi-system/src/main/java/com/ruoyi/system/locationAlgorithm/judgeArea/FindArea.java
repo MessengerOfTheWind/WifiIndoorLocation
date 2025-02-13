@@ -28,35 +28,40 @@ public class FindArea {
                         .anyMatch(itemB -> itemB.getApName().equals(itemA.getApName())))
                 .collect(Collectors.toList());
         // 判断是否获取到了周围wifi信号
-        if (exitedWifiRssiList.size() <= 2){
+        if (exitedWifiRssiList.size() <= 0){
             return -1L;
         }else{
             // 对获取到的信号值进行降序排序
             exitedWifiRssiList.sort(Comparator.comparing(UserWifiRssi.WifiRssi::getRssi).reversed());
             Map<Long, Integer> countApMap = new HashMap<>();
-            // 定义count用来统计每个单位所处的信号
-            for (UserWifiRssi.WifiRssi wifiRssi: exitedWifiRssiList
-                 ) {
-                String thisApName = wifiRssi.getApName();
-                Aptable aptable = aptableMapper.selectByApName(thisApName);
-                // 对当前获取的apTable做统计得到所处区域
-                Long thisAreaId = aptable.getAreaId();
-                countApMap.put(thisAreaId, countApMap.getOrDefault(thisAreaId, 0) + 1);
-            }
-            // 得到出现次数最多的地区单位
-            // 初始化最大值变量
-            Long maxKey = -1L;
-            Integer maxValue = Integer.MIN_VALUE;
+//            // 定义count用来统计每个单位所处的信号
+//            for (UserWifiRssi.WifiRssi wifiRssi: exitedWifiRssiList
+//                 ) {
+//                String thisApName = wifiRssi.getApName();
+//                Aptable aptable = aptableMapper.selectByApName(thisApName);
+//                // 对当前获取的apTable做统计得到所处区域
+//                Long thisAreaId = aptable.getAreaId();
+//                countApMap.put(thisAreaId, countApMap.getOrDefault(thisAreaId, 0) + 1);
+//            }
+//            // 得到出现次数最多的地区单位
+//            // 初始化最大值变量
+//            Long maxKey = -1L;
+//            Integer maxValue = Integer.MIN_VALUE;
+//
+//            // 遍历Map，找到最大值的key
+//            for (Map.Entry<Long, Integer> entry : countApMap.entrySet()) {
+//                if (entry.getValue() > maxValue) {
+//                    maxValue = entry.getValue();
+//                    maxKey = entry.getKey();
+//                }
+//            }
 
-            // 遍历Map，找到最大值的key
-            for (Map.Entry<Long, Integer> entry : countApMap.entrySet()) {
-                if (entry.getValue() > maxValue) {
-                    maxValue = entry.getValue();
-                    maxKey = entry.getKey();
-                }
-            }
-
-            return maxKey;
+            // 找信号最强的
+            String thisApName = exitedWifiRssiList.get(0).getApName();
+            Aptable aptable = aptableMapper.selectByApName(thisApName);
+            Long thisAreaId = aptable.getAreaId();
+//            return maxKey;
+            return thisAreaId;
         }
     }
 
