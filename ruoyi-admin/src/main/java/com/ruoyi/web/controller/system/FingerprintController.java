@@ -43,71 +43,8 @@ public class FingerprintController extends BaseController {
     @PostMapping("/LocationGet")
     public AjaxResult getFinger(@RequestBody UserWifiRssi userWifiRssi)
     {
-
-
         logger.info("userWifiRssi="+userWifiRssi.toString());
-
         String predictionLocation = userLocationService.computeUserLocation(userWifiRssi);
-        //将他们进行分组
-
-
-
-//
-//        // 对比的rssi信号
-//        List<Integer> compareRssi = new ArrayList<>();
-//        for (UserWifiRssi.WifiRssi r:processedList
-//             ) {
-//            compareRssi.add(r.getRssi());
-//        }
-//        String wifiAreaName = "新wifi测量区域";
-//        List<WifiView> list = (ArrayList<WifiView>) fingerprintService.selectFingerprintList(new WifiView(wifiAreaName));
-//        System.out.println(list.size());
-//        // 按照category和type分类
-//        Map<String, Map<Double, Map<Double, Map<Double, List<WifiView>>>>> classifiedItems = list.stream()
-//                .collect(Collectors.groupingBy(WifiView::getAreaName,
-//                        Collectors.groupingBy(WifiView::getPoX,
-//                                Collectors.groupingBy(WifiView::getPoY,
-//                                        Collectors.groupingBy(WifiView::getPoZ)))));
-
-
-
-        // 指纹对比库集合，形如{areaName='区域1', XYZ='6.0, 1.0, 1.0', rssiList = [-43,-51,-52,-47]
-//        List<Finger> fingerList = new ArrayList<>();
-//        // 输出分类结果
-//        System.out.println(classifiedItems);
-//        classifiedItems.forEach((category, typeMap) -> {
-//            typeMap.forEach((type, brandMap) -> {
-//                brandMap.forEach((brand, modelMap) -> {
-//                    modelMap.forEach((model, itemList) -> {
-//                        // 针对itemList进行排序
-//                        Collections.sort(itemList, new Comparator<WifiView>() {
-//                            @Override
-//                            public int compare(WifiView item1, WifiView item2) {
-//                                return item2.getApName().compareTo(item1.getApName());
-//                            }
-//                        });
-//
-//                        // 创建对比的finger
-//                        String baseInfoLocation = itemList.get(0).LocationToString();
-//                        Finger finger = new Finger(itemList.get(0).getAreaName(),baseInfoLocation);
-//                        List<Integer> rssi = new ArrayList<>();
-//                        for (WifiView i:itemList
-//                        ) {
-//                            rssi.add(i.getWiRssi());
-//                        }
-//                        finger.setRssiList(rssi);
-//                        fingerList.add(finger);
-//
-//                        System.out.println(finger);
-//                    });
-//                });
-//            });
-//            System.out.println(fingerList);
-//        });
-//        String predictionLocation = Cal.cal(fingerList, compareRssi);
-//        String predictionLocation = Cal.calMutiple(fingerList, compareRssi);
-//        UserLocation userLocation = new UserLocation(userWifiRssi.getUser(),37L,predictionLocation);
-//        userLocationService.insertUserLocation(userLocation);
         return new AjaxResult(1, predictionLocation);
     }
 
