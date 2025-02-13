@@ -133,3 +133,11 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+# 短信配置
+sms:
+  code:
+    # 验证码最高获取次数
+    maxCount: 5
+    # 锁定时间（默认1分钟）
+    lockTime: 1
