@@ -29,7 +29,7 @@ public class ScreenMonitorServiceImpl implements IScreenMonitorService {
         for (ScreenMonitorView screen: screenMonitorViewList
              ) {
             String areaName = screen.getAreaName();
-            if(screen.getOnlineStatus() == 1){
+            if(screen.getOnlineStatus() == "2"){
                 personMap.put(areaName, personMap.getOrDefault(areaName, 0) + 1);
             }
         }

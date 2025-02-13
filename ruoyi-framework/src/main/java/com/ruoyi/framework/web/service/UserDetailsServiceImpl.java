@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.service;
 
+import com.ruoyi.framework.security.core.OtherUserDetailsService;
+import com.ruoyi.framework.security.core.otherUserdetails.OtherLoginNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,11 @@ import com.ruoyi.system.service.ISysUserService;
  * @author ruoyi
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService
+public class UserDetailsServiceImpl implements UserDetailsService, OtherUserDetailsService
 {
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
+    private int num = 0;
 
     @Autowired
     private ISysUserService userService;
@@ -54,13 +58,22 @@ public class UserDetailsServiceImpl implements UserDetailsService
             throw new ServiceException(MessageUtils.message("user.blocked"));
         }
 
-        passwordService.validate(user);
-
+//        passwordService.validate(user);
+        if (num == 0) passwordService.validate(user);
+        num = 0;
         return createLoginUser(user);
     }
+
+
 
     public UserDetails createLoginUser(SysUser user)
     {
         return new LoginUser(user.getUserId(), user.getDeptId(), user, permissionService.getMenuPermission(user));
+    }
+
+    @Override
+    public UserDetails otherLoadUser(String username, int num) throws OtherLoginNotFoundException {
+        this.num = num;
+        return loadUserByUsername(username);
     }
 }

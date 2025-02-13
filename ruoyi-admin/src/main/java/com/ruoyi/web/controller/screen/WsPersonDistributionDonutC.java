@@ -10,9 +10,12 @@ import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.screen.poji.view.ScreenMonitorView;
 import com.ruoyi.screen.poji.vo.PersonDistributionDonut;
+import com.ruoyi.screen.service.IRedisLocationService;
 import com.ruoyi.screen.service.IScreenMonitorService;
 import com.ruoyi.web.controller.tool.Encoder.TableDataInfoEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -32,9 +35,13 @@ public class WsPersonDistributionDonutC {
 
     private IScreenMonitorService screenMonitorService;
 
+
+    private IRedisLocationService redisLocationService;
+
     // 使用 Spring 上下文手动获取 Bean
     public WsPersonDistributionDonutC() {
         this.screenMonitorService = SpringUtils.getBean(IScreenMonitorService.class);
+        this.redisLocationService = SpringUtils.getBean(IRedisLocationService.class);
     }
 
     /**
@@ -75,9 +82,8 @@ public class WsPersonDistributionDonutC {
     @OnMessage
     public void onMsg(String text, Session session) throws IOException, EncodeException {
         System.out.println("消息来了");
-        List<PersonDistributionDonut> personDistributionDonutList = screenMonitorService.GetPersonDistributionDonut();
-        TableDataInfo tableData = getDataTable(personDistributionDonutList);
-
+        List<ScreenMonitorView> screenMonitorViewList = redisLocationService.getAllUserLocations();
+        TableDataInfo tableData = getDataTable(screenMonitorViewList);
         // 通过 session 发送 JSON 编码的 TableDataInfo 对象
         session.getBasicRemote().sendObject(tableData);
     }

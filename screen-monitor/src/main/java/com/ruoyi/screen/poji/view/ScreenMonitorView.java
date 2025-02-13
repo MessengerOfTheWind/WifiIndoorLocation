@@ -16,15 +16,31 @@ public class ScreenMonitorView {
 
     private Date updateTime;
 
-    private Integer onlineStatus;
+    private String onlineStatus;
 
-    public ScreenMonitorView(Long userLocationId, String userName, String areaName, String userXyz, Date createTime, Date updateTime, Integer onlineStatus) {
+    public ScreenMonitorView(Long userLocationId, String userName, String areaName, String userXyz, Date createTime, Date updateTime, String onlineStatus) {
         this.userLocationId = userLocationId;
         this.userName = userName;
         this.areaName = areaName;
         this.userXyz = userXyz;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.onlineStatus = onlineStatus;
+    }
+
+    public ScreenMonitorView(String userName, String areaName, String userXyz, Date createTime, Date updateTime, String onlineStatus) {
+        this.userName = userName;
+        this.areaName = areaName;
+        this.userXyz = userXyz;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.onlineStatus = onlineStatus;
+    }
+
+    public ScreenMonitorView(String userName, String areaName, String userXyz, String onlineStatus) {
+        this.userName = userName;
+        this.areaName = areaName;
+        this.userXyz = userXyz;
         this.onlineStatus = onlineStatus;
     }
 
@@ -79,11 +95,11 @@ public class ScreenMonitorView {
         this.updateTime = updateTime;
     }
 
-    public Integer getOnlineStatus() {
+    public String getOnlineStatus() {
         return onlineStatus;
     }
 
-    public void setOnlineStatus(Integer onlineStatus) {
+    public void setOnlineStatus(String onlineStatus) {
         this.onlineStatus = onlineStatus;
     }
 

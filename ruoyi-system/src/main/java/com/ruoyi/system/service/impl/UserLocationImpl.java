@@ -1,7 +1,11 @@
 package com.ruoyi.system.service.impl;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ruoyi.screen.poji.view.ScreenMonitorView;
+import com.ruoyi.screen.service.IRedisLocationService;
 import com.ruoyi.system.domain.Aptable;
+import com.ruoyi.system.domain.Areatable;
 import com.ruoyi.system.domain.Positiontable;
 import com.ruoyi.system.domain.UserLocation;
 import com.ruoyi.system.domain.view.UserWifiRssi;
@@ -9,13 +13,16 @@ import com.ruoyi.system.locationAlgorithm.LocationAlgorithm.TempLocation;
 import com.ruoyi.system.locationAlgorithm.LocationAlgorithm.WifiRssiMatcher;
 import com.ruoyi.system.locationAlgorithm.judgeArea.FindArea;
 import com.ruoyi.system.mapper.AptableMapper;
+import com.ruoyi.system.mapper.AreatableMapper;
 import com.ruoyi.system.mapper.PositiontableMapper;
 import com.ruoyi.system.mapper.UserLocationMapper;
 import com.ruoyi.system.mapper.view.WifiTableViewMapper;
+import com.ruoyi.system.service.IAreatableService;
 import com.ruoyi.system.service.IUserLocationService;
 import com.ruoyi.system.domain.model.WifiTableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Random;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,6 +43,12 @@ public class UserLocationImpl implements IUserLocationService {
 
     @Autowired
     private PositiontableMapper positiontableMapper;
+
+    @Autowired
+    private IRedisLocationService redisLocationService;
+
+    @Autowired
+    private AreatableMapper areatableMapper;
 
     @Override
     public UserLocation selectUserLocationByUserName(String userName) {
@@ -100,33 +113,36 @@ public class UserLocationImpl implements IUserLocationService {
             userMap.put(thisApId, wifiRssi.getRssi());
         }
         //查找所处区域的所有信号信息
-        List<WifiTableView> wifiTableViews = wifiTableViewMapper.selectWifiTableViewByAreaId(areaId);
+//        List<WifiTableView> wifiTableViews = wifiTableViewMapper.selectWifiTableViewByAreaId(areaId);
+//
+//        // 先按poId分类，然后在每个分类内将apId和wiRssi转换为Map
+//        Map<Long, Map<Long, Integer>> groupedByPoIdAndMapped = wifiTableViews.stream()
+//                .collect(Collectors.groupingBy(
+//                        WifiTableView::getPoId, // 先按poId分类
+//                        Collectors.toMap(WifiTableView::getApId, WifiTableView::getWiRssi) // 再将每个分类内的apId和wiRssi转换为Map
+//                ));
 
-        // 先按poId分类，然后在每个分类内将apId和wiRssi转换为Map
-        Map<Long, Map<Long, Integer>> groupedByPoIdAndMapped = wifiTableViews.stream()
-                .collect(Collectors.groupingBy(
-                        WifiTableView::getPoId, // 先按poId分类
-                        Collectors.toMap(WifiTableView::getApId, WifiTableView::getWiRssi) // 再将每个分类内的apId和wiRssi转换为Map
-                ));
-
-        // 输出分组后的Map
-//        groupedByPoIdAndMapped.forEach((poId, map) -> {
-//            System.out.println("poId: " + poId);
-//            map.forEach((apId, wiRssi) -> {
-//                System.out.println("  apId: " + apId + ", wiRssi: " + wiRssi);
-//            });
-//        });
-
-        WifiRssiMatcher wifiRssiMatcher = new WifiRssiMatcher();
-        Long positionId = wifiRssiMatcher.findClosestPoId(userMap, groupedByPoIdAndMapped, apWeightMap);
-
-        Positiontable  positiontable = positiontableMapper.selectPositiontableByPoId(positionId);
+//        WifiRssiMatcher wifiRssiMatcher = new WifiRssiMatcher();
+//        Long positionId = wifiRssiMatcher.findClosestPoId(userMap, groupedByPoIdAndMapped, apWeightMap);
+//
+//        Positiontable  positiontable = positiontableMapper.selectPositiontableByPoId(positionId);
 
         String xyz = getLocation(userMap);
 //        String xyz = positiontable.getPoX().toString() +", "+ positiontable.getPoY().toString() +", "+ positiontable.getPoZ().toString();
 ////        System.out.println(xyz);
 //
         UserLocation userLocation = new UserLocation(user,areaId,xyz);
+
+
+        // 将用户的信息存到redis中
+        Areatable areatable = areatableMapper.selectAreatableByAreaId(areaId);
+        String areaName = areatable.getAreaName();
+        ScreenMonitorView screenMonitorView = new ScreenMonitorView(user, areaName, xyz, "2");
+        try {
+            redisLocationService.updateUserLocation(screenMonitorView);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         //检查是否存在
         UserLocation exitedUser = userLocationMapper.selectUserLocationByUserName(user);
         if (exitedUser == null){
@@ -134,8 +150,6 @@ public class UserLocationImpl implements IUserLocationService {
         }else {
             userLocationMapper.updateUserLocation(userLocation);
         }
-
-
         return xyz;
     }
 
@@ -157,24 +171,46 @@ public class UserLocationImpl implements IUserLocationService {
             }
         }
         //如果最强的信号>-55,返回apId
-        if(firstRssi > -55){
-            Long apId = firstApId;
-            Long poId = aptableMapper.selectAptableByApId(apId).getPoId();
-            Positiontable positiontable = positiontableMapper.selectPositiontableByPoId(poId);
-            String xyz = positiontable.getPoX().toString() +", "+ positiontable.getPoY().toString() +", "+ positiontable.getPoZ().toString();
-            return xyz;
-        }else if (firstRssi - secRssi<8){
-            Long firstPoId = aptableMapper.selectAptableByApId(firstApId).getPoId();
-            Long secPoId = aptableMapper.selectAptableByApId(secApId).getPoId();
-            Positiontable firstPosition = positiontableMapper.selectPositiontableByPoId(firstPoId);
-            Positiontable secPosition = positiontableMapper.selectPositiontableByPoId(secPoId);
-            Integer x = Math.round((firstPosition.getPoX() + secPosition.getPoX())/2);
-            Integer y = Math.round((firstPosition.getPoY() + secPosition.getPoY())/2);
-            String xyz = x.toString() + ", "+ y.toString() + ", 1";
-            return xyz;
+//        if(firstRssi > -55){
+//            Long apId = firstApId;
+//            Long poId = aptableMapper.selectAptableByApId(apId).getPoId();
+//            Positiontable positiontable = positiontableMapper.selectPositiontableByPoId(poId);
+//            String xyz = positiontable.getPoX().toString() +", "+ positiontable.getPoY().toString() +", "+ positiontable.getPoZ().toString();
+//            return xyz;
+//        }else if (firstRssi - secRssi<8){
+//            Long firstPoId = aptableMapper.selectAptableByApId(firstApId).getPoId();
+//            Long secPoId = aptableMapper.selectAptableByApId(secApId).getPoId();
+//            Positiontable firstPosition = positiontableMapper.selectPositiontableByPoId(firstPoId);
+//            Positiontable secPosition = positiontableMapper.selectPositiontableByPoId(secPoId);
+//            Integer x = Math.round((firstPosition.getPoX() + secPosition.getPoX())/2);
+//            Integer y = Math.round((firstPosition.getPoY() + secPosition.getPoY())/2);
+//            String xyz = x.toString() + ", "+ y.toString() + ", 1";
+//            return xyz;
+//        }else{
+//            return "7, 7 ,1";
+//        }
+        // 返回最强信号点的坐标
+        Long apId = firstApId;
+        Long poId = aptableMapper.selectAptableByApId(apId).getPoId();
+        Positiontable positiontable = positiontableMapper.selectPositiontableByPoId(poId);
+        // 获取到位置后，进行位置偏移
+        Random random = new Random();
+
+        double offsetX = 0; // x 偏移范围 [0, 2]
+        double offsetY = 0; // y 偏移范围 [0
+        if (poId == 12L){
+            offsetX = 2 * random.nextDouble(); // x 偏移范围 [0, 2]
+            offsetY = 2 * random.nextDouble(); // y 偏移范围 [0, 2]
         }else{
-            return "7, 7 ,1";
+            offsetX = 3 * random.nextDouble(); // x 偏移范围 [0, 2]
+            offsetY = 3 * random.nextDouble(); // y 偏移范围 [0, 2]
         }
+        // 偏移 x 和 y 的值
+        double newX = positiontable.getPoX() + offsetX;
+        double newY = positiontable.getPoY() + offsetY;
+        double newZ = positiontable.getPoY();
+        String xyz = newX + ", " + newY + ", " + newZ;
+        return xyz;
     }
 
 }

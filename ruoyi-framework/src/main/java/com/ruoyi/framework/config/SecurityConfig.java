@@ -1,9 +1,12 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.security.core.OtherUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 import com.ruoyi.framework.config.properties.PermitAllUrlProperties;
 import com.ruoyi.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
+import com.ruoyi.framework.security.sms.SmsCodeByPhoneAuthenticationProvider;
 import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
 
 /**
@@ -33,6 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      */
     @Autowired
     private UserDetailsService userDetailsService;
+
+    /**
+     * 自定义用户(手机号验证码)认证逻辑
+     */
+    @Autowired
+    private OtherUserDetailsService userDetailsServiceByPhone;
     
     /**
      * 认证失败处理类
@@ -70,12 +80,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      * @return
      * @throws Exception
      */
-    @Bean
+    @Bean(name = "authenticationManager")
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception
     {
         return super.authenticationManagerBean();
     }
+
+    @Bean(name = "authenticationManagerPhone")
+    public AuthenticationManager authenticationManagerPhone() {
+        SmsCodeByPhoneAuthenticationProvider daoAuthenticationProvider = new SmsCodeByPhoneAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceByPhone);
+        return new ProviderManager(daoAuthenticationProvider);
+    }
+
 
     /**
      * anyRequest          |   匹配所有请求路径
